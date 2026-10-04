@@ -1,0 +1,700 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Steam Cafe | Fresh Food. Big Flavour.</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                <span>STEAM</span>
+                <small>CAFE</small>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="index.html" class="active">Home</a>
+                <a href="pages/menu.html">Menu</a>
+                <a href="pages/deals.html">Deals</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <a href="pages/cart.html" class="cart-button">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Cart</span>
+                    <b id="cart-count">0</b>
+                </a>
+
+                <a href="pages/login.html" class="login-button">
+                    Login
+                </a>
+
+            </div>
+
+            <button class="mobile-menu-button" id="mobile-menu-button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MOBILE MENU ================= -->
+
+    <div class="mobile-menu" id="mobile-menu">
+
+        <a href="index.html">Home</a>
+        <a href="pages/menu.html">Menu</a>
+        <a href="pages/deals.html">Deals</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="pages/login.html">Login</a>
+
+    </div>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="container hero-container">
+
+                <div class="hero-content">
+
+                    <p class="hero-tag">
+                        <i class="fa-solid fa-fire"></i>
+                        FRESH • HOT • DELICIOUS
+                    </p>
+
+                    <h1>
+                        Fresh Food.
+                        <span>Big Flavour.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Delicious burgers, crispy chicken, loaded fries
+                        and more — made fresh for you.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="pages/menu.html" class="btn btn-primary">
+                            Order Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                        <a href="pages/menu.html" class="btn btn-outline">
+                            View Menu
+                        </a>
+
+                    </div>
+
+                    <div class="hero-stats">
+
+                        <div>
+                            <strong>25+</strong>
+                            <span>Food Items</span>
+                        </div>
+
+                        <div>
+                            <strong>4.8</strong>
+                            <span>Customer Rating</span>
+                        </div>
+
+                        <div>
+                            <strong>30m</strong>
+                            <span>Avg. Delivery</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hero-image">
+
+                    <div class="hero-circle"></div>
+
+                    <div class="food-placeholder">
+                        <i class="fa-solid fa-burger"></i>
+                    </div>
+
+                    <div class="floating-card card-one">
+                        <i class="fa-solid fa-star"></i>
+                        <div>
+                            <strong>4.8</strong>
+                            <span>Excellent</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-two">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <div>
+                            <strong>Fast</strong>
+                            <span>Delivery</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CATEGORIES ================= -->
+
+        <section class="categories section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+                        <p class="section-label">EXPLORE</p>
+                        <h2>What are you craving?</h2>
+                    </div>
+
+                    <a href="pages/menu.html">
+                        View All
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="category-grid">
+
+                    <a href="pages/menu.html?category=burgers" class="category-card">
+                        <div class="category-icon">
+                            🍔
+                        </div>
+                        <h3>Burgers</h3>
+                        <p>8 Items</p>
+                    </a>
+
+                    <a href="pages/menu.html?category=pizza" class="category-card">
+                        <div class="category-icon">
+                            🍕
+                        </div>
+                        <h3>Pizza</h3>
+                        <p>6 Items</p>
+                    </a>
+
+                    <a href="pages/menu.html?category=chicken" class="category-card">
+                        <div class="category-icon">
+                            🍗
+                        </div>
+                        <h3>Chicken</h3>
+                        <p>7 Items</p>
+                    </a>
+
+                    <a href="pages/menu.html?category=fries" class="category-card">
+                        <div class="category-icon">
+                            🍟
+                        </div>
+                        <h3>Fries</h3>
+                        <p>5 Items</p>
+                    </a>
+
+                    <a href="pages/menu.html?category=drinks" class="category-card">
+                        <div class="category-icon">
+                            🥤
+                        </div>
+                        <h3>Drinks</h3>
+                        <p>8 Items</p>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= POPULAR PRODUCTS ================= -->
+
+        <section class="products-section section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+                        <p class="section-label">CUSTOMER FAVOURITES</p>
+                        <h2>Popular This Week</h2>
+                    </div>
+
+                    <a href="pages/menu.html">
+                        See Menu
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="product-grid">
+
+                    <!-- Product 1 -->
+
+                    <article class="product-card">
+
+                        <div class="product-image">
+                            <span class="product-badge">
+                                Popular
+                            </span>
+
+                            <div class="product-placeholder">
+                                🍔
+                            </div>
+                        </div>
+
+                        <div class="product-info">
+
+                            <div class="product-rating">
+                                <i class="fa-solid fa-star"></i>
+                                4.9
+                            </div>
+
+                            <h3>Steam Zinger Burger</h3>
+
+                            <p>
+                                Crispy chicken, fresh lettuce and
+                                our signature sauce.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>Rs. 499</strong>
+
+                                <button
+                                    class="add-cart"
+                                    onclick="addToCart(1, 'Steam Zinger Burger', 499)"
+                                >
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Product 2 -->
+
+                    <article class="product-card">
+
+                        <div class="product-image">
+
+                            <span class="product-badge">
+                                Bestseller
+                            </span>
+
+                            <div class="product-placeholder">
+                                🍕
+                            </div>
+
+                        </div>
+
+                        <div class="product-info">
+
+                            <div class="product-rating">
+                                <i class="fa-solid fa-star"></i>
+                                4.8
+                            </div>
+
+                            <h3>Steam Special Pizza</h3>
+
+                            <p>
+                                Loaded with chicken, cheese and
+                                fresh toppings.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>Rs. 899</strong>
+
+                                <button
+                                    class="add-cart"
+                                    onclick="addToCart(2, 'Steam Special Pizza', 899)"
+                                >
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Product 3 -->
+
+                    <article class="product-card">
+
+                        <div class="product-image">
+
+                            <div class="product-placeholder">
+                                🍗
+                            </div>
+
+                        </div>
+
+                        <div class="product-info">
+
+                            <div class="product-rating">
+                                <i class="fa-solid fa-star"></i>
+                                4.7
+                            </div>
+
+                            <h3>Crispy Chicken</h3>
+
+                            <p>
+                                Golden crispy chicken with
+                                delicious seasoning.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>Rs. 599</strong>
+
+                                <button
+                                    class="add-cart"
+                                    onclick="addToCart(3, 'Crispy Chicken', 599)"
+                                >
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Product 4 -->
+
+                    <article class="product-card">
+
+                        <div class="product-image">
+
+                            <span class="product-badge">
+                                New
+                            </span>
+
+                            <div class="product-placeholder">
+                                🍟
+                            </div>
+
+                        </div>
+
+                        <div class="product-info">
+
+                            <div class="product-rating">
+                                <i class="fa-solid fa-star"></i>
+                                4.8
+                            </div>
+
+                            <h3>Loaded Fries</h3>
+
+                            <p>
+                                Crispy fries loaded with cheese
+                                and special sauce.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>Rs. 399</strong>
+
+                                <button
+                                    class="add-cart"
+                                    onclick="addToCart(4, 'Loaded Fries', 399)"
+                                >
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= DEAL BANNER ================= -->
+
+        <section class="deal-section">
+
+            <div class="container">
+
+                <div class="deal-banner">
+
+                    <div>
+
+                        <p class="section-label">
+                            TODAY'S SPECIAL
+                        </p>
+
+                        <h2>
+                            Steam Family Deal
+                        </h2>
+
+                        <p>
+                            2 Burgers + Large Fries + 2 Drinks
+                        </p>
+
+                        <strong>
+                            Rs. 1,499
+                        </strong>
+
+                        <br>
+
+                        <a href="pages/deals.html" class="btn btn-primary">
+                            Get This Deal
+                        </a>
+
+                    </div>
+
+                    <div class="deal-emoji">
+                        🍔 🍟 🥤
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= WHY STEAM ================= -->
+
+        <section class="why-section section">
+
+            <div class="container">
+
+                <div class="section-heading centered">
+
+                    <p class="section-label">
+                        WHY STEAM CAFE
+                    </p>
+
+                    <h2>
+                        Made for food lovers
+                    </h2>
+
+                </div>
+
+
+                <div class="features-grid">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+
+                        <h3>Fresh Ingredients</h3>
+
+                        <p>
+                            Quality ingredients prepared fresh
+                            for every order.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+
+                        <h3>Made Fresh</h3>
+
+                        <p>
+                            Every meal is prepared when
+                            you place your order.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+
+                        <h3>Fast Service</h3>
+
+                        <p>
+                            Quick preparation and reliable
+                            delivery.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+
+                        <h3>Made With Love</h3>
+
+                        <p>
+                            Great food and great experience
+                            for every customer.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container footer-grid">
+
+            <div>
+
+                <a href="index.html" class="logo footer-logo">
+                    <span>STEAM</span>
+                    <small>CAFE</small>
+                </a>
+
+                <p>
+                    Fresh food. Big flavour.
+                    Made especially for you.
+                </p>
+
+                <div class="social-links">
+
+                    <a href="#">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <h3>Quick Links</h3>
+
+                <a href="index.html">Home</a>
+                <a href="pages/menu.html">Menu</a>
+                <a href="pages/deals.html">Deals</a>
+                <a href="#">About</a>
+
+            </div>
+
+
+            <div>
+
+                <h3>Contact</h3>
+
+                <p>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Steam Cafe
+                </p>
+
+                <p>
+                    <i class="fa-solid fa-phone"></i>
+                    03XX-XXXXXXX
+                </p>
+
+                <p>
+                    <i class="fa-solid fa-envelope"></i>
+                    hello@steamcafe.com
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>Opening Hours</h3>
+
+                <p>Monday – Thursday</p>
+                <strong>11:00 AM – 11:00 PM</strong>
+
+                <p>Friday – Sunday</p>
+                <strong>11:00 AM – 12:00 AM</strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Steam Cafe. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
+```
