@@ -1,0 +1,355 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Menu | Steam Cafe</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/menu.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="container nav-container">
+
+        <a href="../index.html" class="logo">
+            <span>STEAM</span>
+            <small>CAFE</small>
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="../index.html">
+                Home
+            </a>
+
+            <a href="menu.html" class="active">
+                Menu
+            </a>
+
+            <a href="deals.html">
+                Deals
+            </a>
+
+            <a href="#">
+                About
+            </a>
+
+            <a href="#">
+                Contact
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a href="cart.html" class="cart-button">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <span>Cart</span>
+
+                <b id="cart-count">0</b>
+
+            </a>
+
+
+            <a
+                href="login.html"
+                class="login-button"
+            >
+                Login
+            </a>
+
+        </div>
+
+
+        <button
+            class="mobile-menu-button"
+            id="mobile-menu-button"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MENU HERO ================= -->
+
+<section class="menu-hero">
+
+    <div class="container">
+
+        <p class="section-label">
+            STEAM CAFE MENU
+        </p>
+
+        <h1>
+            What are you
+            <span>craving?</span>
+        </h1>
+
+        <p>
+            Explore our delicious selection of burgers,
+            pizzas, chicken, fries and drinks.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MENU ================= -->
+
+<main class="menu-main">
+
+    <div class="container">
+
+
+        <!-- SEARCH -->
+
+        <div class="menu-search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search your favourite food..."
+            >
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <div class="menu-categories">
+
+            <button
+                class="category-filter active"
+                data-category="all"
+            >
+                All
+            </button>
+
+            <button
+                class="category-filter"
+                data-category="burgers"
+            >
+                🍔 Burgers
+            </button>
+
+            <button
+                class="category-filter"
+                data-category="pizza"
+            >
+                🍕 Pizza
+            </button>
+
+            <button
+                class="category-filter"
+                data-category="chicken"
+            >
+                🍗 Chicken
+            </button>
+
+            <button
+                class="category-filter"
+                data-category="fries"
+            >
+                🍟 Fries
+            </button>
+
+            <button
+                class="category-filter"
+                data-category="drinks"
+            >
+                🥤 Drinks
+            </button>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div class="menu-header">
+
+            <div>
+
+                <p class="section-label">
+                    OUR MENU
+                </p>
+
+                <h2 id="menu-title">
+                    All Items
+                </h2>
+
+            </div>
+
+            <span id="product-count">
+                0 items
+            </span>
+
+        </div>
+
+
+        <!-- PRODUCTS -->
+
+        <div
+            class="menu-product-grid"
+            id="product-container"
+        >
+        </div>
+
+
+        <!-- NO RESULTS -->
+
+        <div
+            class="no-results"
+            id="no-results"
+        >
+
+            <div>
+                🍽️
+            </div>
+
+            <h3>
+                No food found
+            </h3>
+
+            <p>
+                Try another search or category.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="container footer-grid">
+
+        <div>
+
+            <a
+                href="../index.html"
+                class="logo footer-logo"
+            >
+
+                <span>STEAM</span>
+                <small>CAFE</small>
+
+            </a>
+
+            <p>
+                Fresh food. Big flavour.
+                Made especially for you.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>Quick Links</h3>
+
+            <a href="../index.html">
+                Home
+            </a>
+
+            <a href="menu.html">
+                Menu
+            </a>
+
+            <a href="deals.html">
+                Deals
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>Contact</h3>
+
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                Steam Cafe
+            </p>
+
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                03XX-XXXXXXX
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>Opening Hours</h3>
+
+            <p>
+                Monday – Sunday
+            </p>
+
+            <strong>
+                11:00 AM – 12:00 AM
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Steam Cafe. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="../js/products.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/menu.js"></script>
+
+</body>
+
+</html>
+```

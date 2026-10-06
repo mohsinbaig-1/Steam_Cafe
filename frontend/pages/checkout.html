@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | Steam Cafe</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/checkout.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../index.html" class="logo">
+            <img
+                src="../images/logo/steam-cafe-logo.png"
+                alt="Steam Cafe Logo"
+            >
+        </a>
+
+        <nav class="nav-menu" id="nav-menu">
+
+            <a href="../index.html">Home</a>
+
+            <a href="menu.html">Menu</a>
+
+            <a href="deals.html">Deals</a>
+
+            <a href="cart.html">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Cart
+                <span id="cart-count" class="cart-count">0</span>
+            </a>
+
+            <a href="login.html" class="nav-login">
+                <i class="fa-solid fa-user"></i>
+                Login
+            </a>
+
+        </nav>
+
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= CHECKOUT HERO ================= -->
+
+<section class="checkout-hero">
+
+    <div class="checkout-hero-content">
+
+        <span class="section-tag">STEAM CAFE</span>
+
+        <h1>Checkout</h1>
+
+        <p>
+            Choose how you want to receive your order.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CHECKOUT ================= -->
+
+<main class="checkout-page">
+
+    <div class="checkout-container">
+
+
+        <!-- =====================================
+             LEFT SIDE
+        ====================================== -->
+
+        <section class="checkout-form">
+
+
+            <!-- DELIVERY METHOD -->
+
+            <div class="checkout-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-truck"></i>
+                    </div>
+
+                    <div>
+                        <span class="section-tag">
+                            FULFILLMENT
+                        </span>
+
+                        <h2>Order Method</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="method-options">
+
+
+                    <!-- DELIVERY -->
+
+                    <label class="method-option active">
+
+                        <input
+                            type="radio"
+                            name="order-method"
+                            value="delivery"
+                            checked
+                        >
+
+                        <div class="method-icon">
+                            <i class="fa-solid fa-motorcycle"></i>
+                        </div>
+
+                        <div class="method-content">
+
+                            <strong>Delivery</strong>
+
+                            <span>
+                                Get your order delivered to your address.
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-circle-check method-check"></i>
+
+                    </label>
+
+
+                    <!-- PICKUP -->
+
+                    <label class="method-option">
+
+                        <input
+                            type="radio"
+                            name="order-method"
+                            value="pickup"
+                        >
+
+                        <div class="method-icon">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+
+                        <div class="method-content">
+
+                            <strong>Pickup</strong>
+
+                            <span>
+                                Pick up your order from a Steam Cafe branch.
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-circle-check method-check"></i>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 DELIVERY INFORMATION
+            ====================================== -->
+
+            <div
+                class="checkout-card"
+                id="delivery-section"
+            >
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-tag">
+                            DELIVERY
+                        </span>
+
+                        <h2>Delivery Information</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="full-name">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="full-name"
+                            placeholder="Enter your full name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="03XX XXXXXXX"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label for="address">
+                            Delivery Address
+                        </label>
+
+                        <textarea
+                            id="address"
+                            rows="3"
+                            placeholder="House number, street, area..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="city">
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            id="city"
+                            placeholder="Your city"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="area">
+                            Area
+                        </label>
+
+                        <input
+                            type="text"
+                            id="area"
+                            placeholder="Your area"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 PICKUP INFORMATION
+            ====================================== -->
+
+            <div
+                class="checkout-card hidden"
+                id="pickup-section"
+            >
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-tag">
+                            PICKUP
+                        </span>
+
+                        <h2>Select Branch</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="branch-options">
+
+
+                    <label class="branch-option active">
+
+                        <input
+                            type="radio"
+                            name="branch"
+                            value="main"
+                            checked
+                        >
+
+                        <div>
+
+                            <strong>Steam Cafe Main Branch</strong>
+
+                            <span>
+                                Main Boulevard
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </label>
+
+
+                    <label class="branch-option">
+
+                        <input
+                            type="radio"
+                            name="branch"
+                            value="city"
+                        >
+
+                        <div>
+
+                            <strong>Steam Cafe City Branch</strong>
+
+                            <span>
+                                City Center
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </label>
+
+
+                    <label class="branch-option">
+
+                        <input
+                            type="radio"
+                            name="branch"
+                            value="campus"
+                        >
+
+                        <div>
+
+                            <strong>Steam Cafe Campus Branch</strong>
+
+                            <span>
+                                University Area
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 PAYMENT
+            ====================================== -->
+
+            <div class="checkout-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-tag">
+                            PAYMENT
+                        </span>
+
+                        <h2>Payment Method</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="payment-options">
+
+
+                    <label class="payment-option active">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="cash"
+                            checked
+                        >
+
+                        <i class="fa-solid fa-money-bill-wave"></i>
+
+                        <div>
+
+                            <strong>Cash on Delivery</strong>
+
+                            <span>
+                                Pay when your order arrives.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="card"
+                        >
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                        <div>
+
+                            <strong>Card</strong>
+
+                            <span>
+                                Pay using your debit or credit card.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 ORDER NOTES
+            ====================================== -->
+
+            <div class="checkout-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-note-sticky"></i>
+                    </div>
+
+                    <div>
+
+                        <span class="section-tag">
+                            OPTIONAL
+                        </span>
+
+                        <h2>Order Notes</h2>
+
+                    </div>
+
+                </div>
+
+
+                <textarea
+                    id="order-notes"
+                    class="order-notes"
+                    rows="4"
+                    placeholder="Any special instructions for your order?"
+                ></textarea>
+
+            </div>
+
+
+            <div
+                id="checkout-message"
+                class="checkout-message"
+            ></div>
+
+
+            <button
+                id="place-order-btn"
+                class="place-order-btn"
+            >
+
+                <span>Place Order</span>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </section>
+
+
+        <!-- =====================================
+             RIGHT SIDE SUMMARY
+        ====================================== -->
+
+        <aside class="checkout-summary">
+
+            <div class="summary-header">
+
+                <span class="section-tag">
+                    YOUR ORDER
+                </span>
+
+                <h2>Order Summary</h2>
+
+            </div>
+
+
+            <div
+                id="checkout-items"
+                class="checkout-items"
+            >
+                <!-- JavaScript -->
+            </div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-row">
+
+                <span>Subtotal</span>
+
+                <strong id="checkout-subtotal">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Delivery</span>
+
+                <strong id="checkout-delivery">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-total">
+
+                <span>Total</span>
+
+                <strong id="checkout-total">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="secure-checkout">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <div>
+
+                    <strong>Secure Checkout</strong>
+
+                    <p>
+                        Your order details are securely processed.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <img
+                src="../images/logo/steam-cafe-logo.png"
+                alt="Steam Cafe Logo"
+            >
+
+            <p>
+                Fresh food. Big flavour.
+                Made with passion at Steam Cafe.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>Quick Links</h3>
+
+            <a href="../index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="deals.html">Deals</a>
+            <a href="cart.html">Cart</a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>Contact</h3>
+
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                +92 300 0000000
+            </p>
+
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                info@steamcafe.com
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Steam Cafe. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+<script src="../js/checkout.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cart | Steam Cafe</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/cart.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../index.html" class="logo">
+            <img
+                src="../images/logo/steam-cafe-logo.png"
+                alt="Steam Cafe Logo"
+            >
+        </a>
+
+        <nav class="nav-menu" id="nav-menu">
+
+            <a href="../index.html">Home</a>
+
+            <a href="menu.html">Menu</a>
+
+            <a href="deals.html">Deals</a>
+
+            <a href="cart.html" class="active">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Cart
+                <span id="cart-count" class="cart-count">0</span>
+            </a>
+
+            <a href="login.html" class="nav-login">
+                <i class="fa-solid fa-user"></i>
+                Login
+            </a>
+
+        </nav>
+
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= CART HERO ================= -->
+
+<section class="cart-hero">
+
+    <div class="cart-hero-content">
+
+        <span class="section-tag">STEAM CAFE</span>
+
+        <h1>Your Cart</h1>
+
+        <p>
+            Review your delicious choices before placing your order.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CART ================= -->
+
+<main class="cart-page">
+
+    <div class="cart-container">
+
+        <!-- LEFT SIDE -->
+
+        <section class="cart-items-section">
+
+            <div class="cart-section-header">
+
+                <div>
+                    <span class="section-tag">YOUR ORDER</span>
+                    <h2>Cart Items</h2>
+                </div>
+
+                <a href="menu.html" class="continue-shopping">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Continue Shopping
+                </a>
+
+            </div>
+
+
+            <!-- Items will be inserted by JavaScript -->
+
+            <div id="cart-items" class="cart-items"></div>
+
+
+            <!-- Empty Cart -->
+
+            <div id="empty-cart" class="empty-cart hidden">
+
+                <div class="empty-cart-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+
+                <h2>Your cart is empty</h2>
+
+                <p>
+                    Looks like you haven't added anything to your cart yet.
+                </p>
+
+                <a href="menu.html" class="primary-btn">
+                    <i class="fa-solid fa-utensils"></i>
+                    Explore Menu
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT SIDE -->
+
+        <aside class="cart-summary">
+
+            <div class="summary-header">
+                <span class="section-tag">ORDER SUMMARY</span>
+                <h2>Summary</h2>
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Subtotal</span>
+
+                <strong id="cart-subtotal">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Delivery Fee</span>
+
+                <strong id="delivery-fee">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-divider"></div>
+
+
+            <div class="summary-total">
+
+                <span>Total</span>
+
+                <strong id="cart-total">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <button
+                id="checkout-button"
+                class="checkout-btn"
+                disabled
+            >
+                Proceed to Checkout
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+
+            <div class="secure-order">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <div>
+                    <strong>Secure Ordering</strong>
+
+                    <p>
+                        Your order information is protected.
+                    </p>
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <img
+                src="../images/logo/steam-cafe-logo.png"
+                alt="Steam Cafe Logo"
+            >
+
+            <p>
+                Fresh food. Big flavour.
+                Made with passion at Steam Cafe.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>Quick Links</h3>
+
+            <a href="../index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="deals.html">Deals</a>
+            <a href="cart.html">Cart</a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>Contact</h3>
+
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                +92 300 0000000
+            </p>
+
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                info@steamcafe.com
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Steam Cafe. All Rights Reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+<script src="../js/cart.js"></script>
+
+</body>
+</html>
