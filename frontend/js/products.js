@@ -1,4 +1,3 @@
-```javascript
 const products = [
 
     // =========================
@@ -202,4 +201,3 @@ const products = [
     }
 
 ];
-```

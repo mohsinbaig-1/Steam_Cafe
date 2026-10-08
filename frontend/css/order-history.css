@@ -1,0 +1,13 @@
+.history-page { min-height: calc(100vh - 78px); padding: 80px 0; background: #0b090d; }
+.history-page h1 { margin: 10px 0; font-size: clamp(40px, 6vw, 64px); }
+.history-intro { color: var(--muted); margin-bottom: 35px; }
+.history-list { display: grid; gap: 14px; max-width: 850px; }
+.history-card { padding: 22px; background: #141116; border: 1px solid var(--border); border-radius: 14px; }
+.history-card-heading { display: flex; justify-content: space-between; gap: 15px; align-items: center; }
+.history-card h2 { font-size: 18px; }
+.history-card-heading span { padding: 5px 10px; border-radius: 20px; color: var(--primary); background: rgba(245,166,35,.1); font-size: 12px; }
+.history-card p { margin: 8px 0; color: var(--muted); font-size: 13px; }
+.history-card > strong { color: var(--primary); }
+.empty-history { padding: 50px 20px; text-align: center; border: 1px dashed #333; border-radius: 14px; max-width: 850px; }
+.empty-history[hidden] { display: none; }
+.empty-history p { color: var(--muted); margin: 8px 0 22px; }

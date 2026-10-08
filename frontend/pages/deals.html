@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deals | Steam Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="../index.html" class="logo"><img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe"></a>
+        <nav class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="deals.html" class="active">Deals</a>
+            <a href="cart.html">Cart <b id="cart-count">0</b></a>
+        </nav>
+        <div class="nav-actions"><a href="login.html" class="login-button">Login</a></div>
+        <button class="mobile-menu-button" id="mobile-menu-button" aria-label="Open navigation" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    </div>
+</header>
+<main>
+    <section class="menu-hero">
+        <div class="container">
+            <p class="section-label">STEAM CAFE DEALS</p>
+            <h1>More flavour, <span>better value.</span></h1>
+            <p>Enjoy curated bundles made for sharing, available while supplies last.</p>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="deal-banner">
+                <div>
+                    <p class="section-label">FAMILY FAVOURITE</p>
+                    <h2>Steam Family Deal</h2>
+                    <p>Steam Zinger Burger, Steam Special Pizza, Loaded Fries and two drinks.</p>
+                    <strong>Rs. 1,499</strong>
+                    <br>
+                    <button class="btn btn-primary" id="family-deal">Add Deal to Cart <i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="deal-emoji" aria-hidden="true">🍔 🍟 🥤</div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="footer"><div class="footer-bottom"><p>© 2026 Steam Cafe. All Rights Reserved.</p></div></footer>
+<script src="../js/main.js"></script>
+<script>
+document.getElementById("family-deal").addEventListener("click", () => {
+    addToCart(1, "Steam Zinger Burger", 499);
+    addToCart(5, "Steam Special Pizza", 899);
+    addToCart(11, "Loaded Fries", 399);
+    addToCart(14, "Cold Drink", 120);
+    addToCart(14, "Cold Drink", 120);
+});
+</script>
+</body>
+</html>

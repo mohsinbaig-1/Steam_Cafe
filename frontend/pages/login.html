@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Steam Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+<header class="navbar"><div class="container nav-container"><a href="../index.html" class="logo"><img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe"></a><nav class="nav-links"><a href="../index.html">Home</a><a href="menu.html">Menu</a><a href="deals.html">Deals</a><a href="cart.html">Cart <b id="cart-count">0</b></a></nav><button class="mobile-menu-button" id="mobile-menu-button" aria-label="Open navigation" aria-expanded="false"><i class="fa-solid fa-bars"></i></button></div></header>
+<main class="auth-page"><form class="auth-card" id="login-form"><p class="section-label">WELCOME BACK</p><h1>Login to Steam Cafe</h1><label for="login-email">Email</label><input id="login-email" type="email" required autocomplete="email"><label for="login-password">Password</label><input id="login-password" type="password" required autocomplete="current-password"><button class="btn btn-primary" type="submit">Login</button><p id="auth-message" role="status"></p><p class="auth-switch">New here? <a href="register.html">Create an account</a></p></form></main>
+<script src="../js/main.js"></script><script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,4 +1,3 @@
-css
 /* =========================
    RESET
 ========================= */
@@ -104,6 +103,13 @@ button {
     text-align: center;
 }
 
+.logo img {
+    display: block;
+    width: 132px;
+    height: 58px;
+    object-fit: contain;
+}
+
 
 /* NAV LINKS */
 
@@ -183,6 +189,44 @@ button {
     background: transparent;
 
     color: white;
+    font-size: 22px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-menu a {
+    color: var(--muted);
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: var(--primary);
+}
+
+.cart-count {
+    display: inline-flex;
+    min-width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.menu-toggle {
+    display: none;
+    border: 0;
+    background: transparent;
+    color: var(--white);
     font-size: 22px;
 }
 
@@ -766,6 +810,29 @@ button {
     background: #070707;
 
     border-top: 1px solid var(--border);
+}
+
+.footer-container {
+    width: min(1180px, 92%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr;
+    gap: 50px;
+    padding-bottom: 60px;
+}
+
+.footer-brand img {
+    display: block;
+    width: 132px;
+    height: 58px;
+    object-fit: contain;
+}
+
+.footer-links a {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
 }
 
 .footer-grid {

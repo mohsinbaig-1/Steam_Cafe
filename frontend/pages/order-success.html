@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmed | Steam Cafe</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/order-success.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../index.html" class="logo">
+            <img
+                src="../images/logo/steam-cafe-logo.jpeg"
+                alt="Steam Cafe Logo"
+            >
+        </a>
+
+        <nav class="nav-menu" id="nav-menu">
+
+            <a href="../index.html">Home</a>
+
+            <a href="menu.html">Menu</a>
+
+            <a href="deals.html">Deals</a>
+
+            <a href="order-history.html">
+                Orders
+            </a>
+
+            <a href="login.html" class="nav-login">
+                <i class="fa-solid fa-user"></i>
+                Login
+            </a>
+
+        </nav>
+
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="success-page">
+
+    <div class="success-container">
+
+
+        <!-- SUCCESS ICON -->
+
+        <div class="success-icon">
+
+            <i class="fa-solid fa-check"></i>
+
+        </div>
+
+
+        <span class="section-tag">
+            STEAM CAFE
+        </span>
+
+
+        <h1>
+            Order Confirmed!
+        </h1>
+
+
+        <p class="success-message">
+            Thank you for ordering from Steam Cafe.
+            Your order has been received successfully.
+        </p>
+
+
+        <!-- ORDER ID -->
+
+        <div class="order-id-box">
+
+            <span>
+                ORDER NUMBER
+            </span>
+
+            <strong id="order-id">
+                SC-000000
+            </strong>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="order-status">
+
+            <div class="status-step active">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+
+                <span>Order Placed</span>
+
+            </div>
+
+
+            <div class="status-line"></div>
+
+
+            <div class="status-step">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-fire-burner"></i>
+                </div>
+
+                <span>Preparing</span>
+
+            </div>
+
+
+            <div class="status-line"></div>
+
+
+            <div class="status-step">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-motorcycle"></i>
+                </div>
+
+                <span>On the Way</span>
+
+            </div>
+
+
+            <div class="status-line"></div>
+
+
+            <div class="status-step">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+
+                <span>Delivered</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER DETAILS -->
+
+        <div class="order-details-card">
+
+            <div class="details-header">
+
+                <div>
+
+                    <span class="section-tag">
+                        ORDER DETAILS
+                    </span>
+
+                    <h2>Your Order</h2>
+
+                </div>
+
+                <span
+                    id="order-status-label"
+                    class="status-badge"
+                >
+                    Pending
+                </span>
+
+            </div>
+
+
+            <div id="order-items" class="order-items">
+                <!-- JavaScript -->
+            </div>
+
+
+            <div class="details-divider"></div>
+
+
+            <div class="detail-row">
+
+                <span>Subtotal</span>
+
+                <strong id="order-subtotal">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span>Delivery Fee</span>
+
+                <strong id="order-delivery">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+
+            <div class="details-divider"></div>
+
+
+            <div class="detail-total">
+
+                <span>Total</span>
+
+                <strong id="order-total">
+                    Rs. 0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- FULFILLMENT -->
+
+        <div class="fulfillment-card">
+
+            <div class="fulfillment-icon">
+
+                <i
+                    id="fulfillment-icon"
+                    class="fa-solid fa-motorcycle"
+                ></i>
+
+            </div>
+
+
+            <div class="fulfillment-info">
+
+                <span class="section-tag">
+                    FULFILLMENT
+                </span>
+
+                <h3 id="fulfillment-title">
+                    Delivery
+                </h3>
+
+                <p id="fulfillment-details">
+                    Your order will be delivered to your address.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="success-actions">
+
+            <a
+                href="menu.html"
+                class="primary-btn"
+            >
+                <i class="fa-solid fa-utensils"></i>
+                Order More
+            </a>
+
+
+            <a
+                href="order-history.html"
+                class="secondary-btn"
+            >
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                View Orders
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <img
+                src="../images/logo/steam-cafe-logo.jpeg"
+                alt="Steam Cafe Logo"
+            >
+
+            <p>
+                Fresh food. Big flavour.
+                Made with passion at Steam Cafe.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>Quick Links</h3>
+
+            <a href="../index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="deals.html">Deals</a>
+            <a href="order-history.html">Orders</a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>Contact</h3>
+
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                +92 300 0000000
+            </p>
+
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                info@steamcafe.com
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Steam Cafe. All Rights Reserved.
+        </p>
+    </div>
+
+</footer>
+
+
+<script src="../js/main.js"></script>
+<script src="../js/order-success.js"></script>
+
+</body>
+</html>

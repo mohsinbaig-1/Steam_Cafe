@@ -1,4 +1,3 @@
-javascript
 // ======================================
 // STEAM CAFE MAIN JAVASCRIPT
 // ======================================
@@ -9,23 +8,32 @@ javascript
 // ===============================
 
 const mobileMenuButton =
-    document.getElementById("mobile-menu-button");
+    document.getElementById("mobile-menu-button") ||
+    document.getElementById("menu-toggle");
 
 const mobileMenu =
-    document.getElementById("mobile-menu");
+    document.getElementById("mobile-menu") ||
+    document.getElementById("nav-menu") ||
+    document.querySelector(".nav-links");
 
 
 if (mobileMenuButton && mobileMenu) {
 
     mobileMenuButton.addEventListener("click", () => {
 
-        if (mobileMenu.style.display === "block") {
+        const isOpen = mobileMenu.classList.contains("is-open");
 
-            mobileMenu.style.display = "none";
+        if (isOpen) {
+
+            mobileMenu.classList.remove("is-open");
+            mobileMenu.style.display = "";
+            mobileMenuButton.setAttribute("aria-expanded", "false");
 
         } else {
 
+            mobileMenu.classList.add("is-open");
             mobileMenu.style.display = "block";
+            mobileMenuButton.setAttribute("aria-expanded", "true");
 
         }
 
@@ -38,8 +46,14 @@ if (mobileMenuButton && mobileMenu) {
 // CART
 // ===============================
 
-let cart =
-    JSON.parse(localStorage.getItem("steamCafeCart")) || [];
+let cart = [];
+
+try {
+    const storedCart = JSON.parse(localStorage.getItem("steamCafeCart"));
+    cart = Array.isArray(storedCart) ? storedCart : [];
+} catch (error) {
+    console.error("Unable to read the saved cart.", error);
+}
 
 
 // ===============================
@@ -48,17 +62,14 @@ let cart =
 
 function updateCartCount() {
 
-    const cartCount =
-        document.getElementById("cart-count");
-
-    if (!cartCount) return;
-
     const totalItems = cart.reduce(
         (total, item) => total + item.quantity,
         0
     );
 
-    cartCount.textContent = totalItems;
+    document.querySelectorAll("#cart-count").forEach(cartCount => {
+        cartCount.textContent = totalItems;
+    });
 }
 
 

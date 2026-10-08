@@ -17,8 +17,14 @@ const cartCountElement = document.getElementById("cart-count");
    CART DATA
 ========================================= */
 
-let cartItems =
-    JSON.parse(localStorage.getItem("steamCafeCart")) || [];
+let cartItems = [];
+
+try {
+    const storedCart = JSON.parse(localStorage.getItem("steamCafeCart"));
+    cartItems = Array.isArray(storedCart) ? storedCart : [];
+} catch (error) {
+    console.error("Unable to read the saved cart.", error);
+}
 
 
 /* =========================================
@@ -293,9 +299,10 @@ function updateSummary(subtotal) {
    CHECKOUT
 ========================================= */
 
-checkoutButton.addEventListener(
-    "click",
-    function () {
+if (checkoutButton) {
+    checkoutButton.addEventListener(
+        "click",
+        function () {
 
         if (cartItems.length === 0) {
             return;
@@ -305,8 +312,9 @@ checkoutButton.addEventListener(
         window.location.href =
             "checkout.html";
 
-    }
-);
+        }
+    );
+}
 
 
 /* =========================================

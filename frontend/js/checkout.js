@@ -34,8 +34,14 @@ const checkoutMessage =
    CART
 ========================================= */
 
-let checkoutCart =
-    JSON.parse(localStorage.getItem("steamCafeCart")) || [];
+let checkoutCart = [];
+
+try {
+    const storedCart = JSON.parse(localStorage.getItem("steamCafeCart"));
+    checkoutCart = Array.isArray(storedCart) ? storedCart : [];
+} catch (error) {
+    console.error("Unable to read the saved cart.", error);
+}
 
 
 /* =========================================
@@ -352,10 +358,16 @@ function validateOrder() {
     }
 
 
-    const method =
-        document.querySelector(
-            'input[name="order-method"]:checked'
-        ).value;
+    const selectedMethod = document.querySelector(
+        'input[name="order-method"]:checked'
+    );
+
+    if (!selectedMethod) {
+        showCheckoutMessage("Please select an order method.", "error");
+        return false;
+    }
+
+    const method = selectedMethod.value;
 
 
     if (method === "delivery") {
@@ -381,15 +393,19 @@ function validateOrder() {
             ).value.trim();
 
 
+        const phonePattern =
+            /^(03\d{2}[-\s]?\d{7}|\+92\s?3\d{2}[-\s]?\d{7})$/;
+
         if (
             !name ||
             !phone ||
             !address ||
-            !city
+            !city ||
+            !phonePattern.test(phone)
         ) {
 
             showCheckoutMessage(
-                "Please complete all required delivery information.",
+                "Please provide valid delivery information and a valid Pakistani phone number.",
                 "error"
             );
 
@@ -551,18 +567,20 @@ placeOrderButton.addEventListener(
         }
 
 
-        const order =
-            createOrder();
+        const order = createOrder();
 
 
         /* Save order locally for now */
 
-        const orders =
-            JSON.parse(
-                localStorage.getItem(
-                    "steamCafeOrders"
-                )
-            ) || [];
+        let orders = [];
+        try {
+            const storedOrders = JSON.parse(
+                localStorage.getItem("steamCafeOrders")
+            );
+            orders = Array.isArray(storedOrders) ? storedOrders : [];
+        } catch (error) {
+            console.error("Unable to read saved orders.", error);
+        }
 
 
         orders.push(order);
