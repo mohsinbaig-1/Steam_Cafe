@@ -7,10 +7,117 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-<header class="navbar"><div class="container nav-container"><a href="../index.html" class="logo"><img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe"></a><nav class="nav-links"><a href="../index.html">Home</a><a href="menu.html">Menu</a><a href="deals.html">Deals</a><a href="cart.html">Cart <b id="cart-count">0</b></a></nav><button class="mobile-menu-button" id="mobile-menu-button" aria-label="Open navigation" aria-expanded="false"><i class="fa-solid fa-bars"></i></button></div></header>
-<main class="auth-page"><form class="auth-card" id="login-form"><p class="section-label">WELCOME BACK</p><h1>Login to Steam Cafe</h1><label for="login-email">Email</label><input id="login-email" type="email" required autocomplete="email"><label for="login-password">Password</label><input id="login-password" type="password" required autocomplete="current-password"><button class="btn btn-primary" type="submit">Login</button><p id="auth-message" role="status"></p><p class="auth-switch">New here? <a href="register.html">Create an account</a></p></form></main>
-<script src="../js/main.js"></script><script src="../js/auth.js"></script>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe">
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="deals.html">Deals</a>
+                <a href="order-history.html">Orders</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-button">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Cart</span>
+                    <b id="cart-count">0</b>
+                </a>
+            </div>
+            <button class="mobile-menu-button" id="mobile-menu-button" type="button" aria-label="Open navigation" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-layout">
+            <section class="auth-intro">
+                <span class="section-tag">STEAM CAFE</span>
+                <h1>Good food is just a login away.</h1>
+                <p>Sign in to keep your Steam Cafe details close by and make your next order even easier.</p>
+            </section>
+
+            <form class="auth-card" id="login-form" novalidate>
+                <div class="auth-card-heading">
+                    <p class="section-label">WELCOME BACK</p>
+                    <h2>Log in to your account</h2>
+                    <p>Enter your details to continue.</p>
+                </div>
+
+                <div class="form-field">
+                    <label for="login-email">Email address</label>
+                    <input id="login-email" name="email" type="email" autocomplete="email" required aria-describedby="login-email-error">
+                    <p class="field-error" id="login-email-error"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="login-password">Password</label>
+                    <div class="password-input">
+                        <input id="login-password" name="password" type="password" autocomplete="current-password" required aria-describedby="login-password-error">
+                        <button class="password-toggle" type="button" data-password-target="login-password" aria-label="Show password" aria-pressed="false">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="field-error" id="login-password-error"></p>
+                </div>
+
+                <label class="checkbox-label" for="remember-me">
+                    <input id="remember-me" type="checkbox">
+                    <span>Remember my email on this device</span>
+                </label>
+
+                <p class="form-message" id="login-message" role="status" aria-live="polite"></p>
+                <button class="btn btn-primary auth-submit" type="submit">Log In <i class="fa-solid fa-arrow-right"></i></button>
+                <p class="auth-switch">New to Steam Cafe? <a href="register.html">Create an account</a></p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer auth-footer">
+        <div class="container footer-grid">
+            <div>
+                <a href="../index.html" class="logo footer-logo">
+                    <img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe">
+                </a>
+                <p>Fresh food. Big flavour.<br>Made especially for you.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Steam Cafe on Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Steam Cafe on Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Steam Cafe on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="deals.html">Deals</a>
+                <a href="order-history.html">Orders</a>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Steam Cafe</p>
+                <p><i class="fa-solid fa-phone"></i> 03XX-XXXXXXX</p>
+                <p><i class="fa-solid fa-envelope"></i> hello@steamcafe.com</p>
+            </div>
+            <div>
+                <h3>Opening Hours</h3>
+                <p>Monday – Thursday</p>
+                <strong>11:00 AM – 11:00 PM</strong>
+                <p>Friday – Sunday</p>
+                <strong>11:00 AM – 12:00 AM</strong>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Steam Cafe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
 </body>
 </html>

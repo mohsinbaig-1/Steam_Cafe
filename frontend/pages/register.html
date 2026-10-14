@@ -3,14 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | Steam Cafe</title>
+    <title>Create Account | Steam Cafe</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-<header class="navbar"><div class="container nav-container"><a href="../index.html" class="logo"><img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe"></a><nav class="nav-links"><a href="../index.html">Home</a><a href="menu.html">Menu</a><a href="deals.html">Deals</a><a href="cart.html">Cart <b id="cart-count">0</b></a></nav><button class="mobile-menu-button" id="mobile-menu-button" aria-label="Open navigation" aria-expanded="false"><i class="fa-solid fa-bars"></i></button></div></header>
-<main class="auth-page"><form class="auth-card" id="register-form"><p class="section-label">JOIN STEAM CAFE</p><h1>Create an account</h1><label for="register-name">Full name</label><input id="register-name" type="text" required autocomplete="name"><label for="register-email">Email</label><input id="register-email" type="email" required autocomplete="email"><label for="register-password">Password</label><input id="register-password" type="password" minlength="6" required autocomplete="new-password"><button class="btn btn-primary" type="submit">Register</button><p id="auth-message" role="status"></p><p class="auth-switch">Already registered? <a href="login.html">Login</a></p></form></main>
-<script src="../js/main.js"></script><script src="../js/auth.js"></script>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe">
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="deals.html">Deals</a>
+                <a href="order-history.html">Orders</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-button">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Cart</span>
+                    <b id="cart-count">0</b>
+                </a>
+            </div>
+            <button class="mobile-menu-button" id="mobile-menu-button" type="button" aria-label="Open navigation" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-layout">
+            <section class="auth-intro">
+                <span class="section-tag">JOIN STEAM CAFE</span>
+                <h1>Make every craving count.</h1>
+                <p>Create your account to keep your ordering details ready for your next delicious visit.</p>
+            </section>
+
+            <form class="auth-card" id="register-form" novalidate>
+                <div class="auth-card-heading">
+                    <p class="section-label">CREATE ACCOUNT</p>
+                    <h2>Join Steam Cafe</h2>
+                    <p>It only takes a moment to get started.</p>
+                </div>
+
+                <div class="form-field">
+                    <label for="register-name">Full name</label>
+                    <input id="register-name" name="name" type="text" autocomplete="name" required aria-describedby="register-name-error">
+                    <p class="field-error" id="register-name-error"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="register-email">Email address</label>
+                    <input id="register-email" name="email" type="email" autocomplete="email" required aria-describedby="register-email-error">
+                    <p class="field-error" id="register-email-error"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="register-phone">Phone number</label>
+                    <input id="register-phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="register-phone-error">
+                    <p class="field-error" id="register-phone-error"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="register-password">Password</label>
+                    <div class="password-input">
+                        <input id="register-password" name="password" type="password" minlength="6" autocomplete="new-password" required aria-describedby="register-password-error">
+                        <button class="password-toggle" type="button" data-password-target="register-password" aria-label="Show password" aria-pressed="false">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="field-error" id="register-password-error"></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="register-confirm-password">Confirm password</label>
+                    <div class="password-input">
+                        <input id="register-confirm-password" name="confirmPassword" type="password" minlength="6" autocomplete="new-password" required aria-describedby="register-confirm-password-error">
+                        <button class="password-toggle" type="button" data-password-target="register-confirm-password" aria-label="Show password" aria-pressed="false">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="field-error" id="register-confirm-password-error"></p>
+                </div>
+
+                <p class="form-message" id="register-message" role="status" aria-live="polite"></p>
+                <button class="btn btn-primary auth-submit" type="submit">Create Account <i class="fa-solid fa-arrow-right"></i></button>
+                <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer auth-footer">
+        <div class="container footer-grid">
+            <div>
+                <a href="../index.html" class="logo footer-logo">
+                    <img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe">
+                </a>
+                <p>Fresh food. Big flavour.<br>Made especially for you.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Steam Cafe on Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Steam Cafe on Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Steam Cafe on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="deals.html">Deals</a>
+                <a href="order-history.html">Orders</a>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Steam Cafe</p>
+                <p><i class="fa-solid fa-phone"></i> 03XX-XXXXXXX</p>
+                <p><i class="fa-solid fa-envelope"></i> hello@steamcafe.com</p>
+            </div>
+            <div>
+                <h3>Opening Hours</h3>
+                <p>Monday – Thursday</p>
+                <strong>11:00 AM – 11:00 PM</strong>
+                <p>Friday – Sunday</p>
+                <strong>11:00 AM – 12:00 AM</strong>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Steam Cafe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
 </body>
 </html>
