@@ -44,12 +44,13 @@
                     <span class="section-label">YOUR ORDERS</span>
                     <h2 id="history-heading">Recent orders</h2>
                 </div>
-                <div class="order-filters" role="group" aria-label="Filter orders">
-                    <button class="filter-button active" type="button" data-filter="all">All</button>
+                    <div class="order-filters" role="group" aria-label="Filter orders">
+                        <button class="filter-button active" type="button" data-filter="all">All Orders</button>
                     <button class="filter-button" type="button" data-filter="pending">Pending</button>
                     <button class="filter-button" type="button" data-filter="preparing">Preparing</button>
                     <button class="filter-button" type="button" data-filter="completed">Completed</button>
-                </div>
+                        <button class="filter-button" type="button" data-filter="cancelled">Cancelled</button>
+                    </div>
             </div>
 
             <div id="order-history-list" class="order-history-list"></div>
@@ -58,10 +59,37 @@
                 <div class="empty-icon"><i class="fa-solid fa-receipt"></i></div>
                 <h2 id="empty-title">No orders yet</h2>
                 <p id="empty-message">Your orders will appear here after you place your first order.</p>
-                <a class="btn btn-primary" href="menu.html">Explore the Menu <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="empty-actions">
+                    <a class="btn btn-primary" href="menu.html">Explore the Menu <i class="fa-solid fa-arrow-right"></i></a>
+                    <a class="btn btn-secondary" href="../index.html">Back to Home</a>
+                </div>
             </div>
         </section>
     </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="../images/logo/steam-cafe-logo.jpeg" alt="Steam Cafe Logo">
+                <p>Fresh food. Big flavour.<br>Made with passion at Steam Cafe.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="deals.html">Deals</a>
+                <a href="order-history.html">Orders</a>
+            </div>
+            <div class="footer-links">
+                <h3>Contact</h3>
+                <p><i class="fa-solid fa-phone"></i> +92 300 0000000</p>
+                <p><i class="fa-solid fa-envelope"></i> info@steamcafe.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Steam Cafe. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <script src="../js/main.js"></script>
     <script src="../js/order-history.js"></script>

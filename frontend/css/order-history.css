@@ -123,6 +123,11 @@
     background: rgba(127, 201, 255, .12);
 }
 
+.status-badge.cancelled {
+    color: #ff8585;
+    background: rgba(255, 133, 133, .12);
+}
+
 .order-card-summary {
     justify-content: flex-start;
     padding: 16px 0;
@@ -201,6 +206,29 @@
     margin: 18px 0 0 auto;
 }
 
+.order-info {
+    display: grid;
+    gap: 8px;
+    max-width: 330px;
+    margin: 20px 0 0 auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.order-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.order-info-row strong {
+    color: #fff;
+    font-weight: 600;
+    text-align: right;
+}
+
 .summary-row {
     padding: 5px 0;
 }
@@ -245,6 +273,33 @@
     color: var(--muted);
 }
 
+.empty-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.empty-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.empty-actions .btn-secondary {
+    padding: 12px 22px;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.empty-actions .btn-secondary:hover {
+    color: #171017;
+    background: var(--primary);
+}
+
 @media (max-width: 640px) {
     .history-hero {
         padding: 44px 0;
@@ -264,7 +319,7 @@
     }
 
     .filter-button {
-        flex: 1;
+        flex: 1 1 auto;
         padding: 9px 8px;
     }
 
@@ -283,6 +338,11 @@
 
     .order-total {
         margin-left: 0;
+    }
+
+    .order-summary,
+    .order-info {
+        max-width: none;
     }
 
     .order-card-summary span + span::before {

@@ -2,6 +2,7 @@
     "use strict";
 
     const rememberedEmailKey = "steamCafeRememberedEmail";
+    const authApiBaseUrl = window.STEAM_CAFE_AUTH_API_URL || "http://localhost:4000";
 
     function setFieldError(input, message) {
         const errorElement = document.getElementById(`${input.id}-error`);
@@ -19,6 +20,21 @@
 
     function validateEmail(value) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    async function requestAuth(path, payload) {
+        const response = await fetch(`${authApiBaseUrl}${path}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const error = new Error(data.error || "The authentication service could not complete the request.");
+            error.status = response.status;
+            throw error;
+        }
+        return data;
     }
 
     function setupPasswordToggles() {
@@ -58,7 +74,7 @@
             console.error("Unable to read remembered login details.", error);
         }
 
-        form.addEventListener("submit", event => {
+        form.addEventListener("submit", async event => {
             event.preventDefault();
             setFieldError(email, "");
             setFieldError(password, "");
@@ -81,16 +97,28 @@
                 return;
             }
 
+            const submitButton = form.querySelector("button[type='submit']");
+            submitButton.disabled = true;
+            setFormMessage(message, "Signing you in...", "");
             try {
-                if (rememberMe.checked) {
-                    localStorage.setItem(rememberedEmailKey, email.value.trim());
-                } else {
-                    localStorage.removeItem(rememberedEmailKey);
+                const data = await requestAuth("/api/auth/login", {
+                    email: email.value.trim(),
+                    password: password.value
+                });
+                try {
+                    if (rememberMe.checked) localStorage.setItem(rememberedEmailKey, email.value.trim());
+                    else localStorage.removeItem(rememberedEmailKey);
+                    sessionStorage.setItem("steamCafeAuthToken", data.token);
+                    sessionStorage.setItem("steamCafeUser", JSON.stringify(data.user));
+                } catch (storageError) {
+                    console.error("Unable to save session details.", storageError);
                 }
+                setFormMessage(message, "Login successful.", "success");
             } catch (error) {
-                console.error("Unable to save remembered login details.", error);
+                setFormMessage(message, error.message, "error");
+            } finally {
+                submitButton.disabled = false;
             }
-            setFormMessage(message, "Your details are valid. Account sign-in will be connected to the Authentication Service later.", "success");
         });
     }
 
@@ -105,7 +133,7 @@
         const confirmation = document.getElementById("register-confirm-password");
         const message = document.getElementById("register-message");
 
-        form.addEventListener("submit", event => {
+        form.addEventListener("submit", async event => {
             event.preventDefault();
             [name, email, phone, password, confirmation].forEach(input => setFieldError(input, ""));
             setFormMessage(message, "", "");
@@ -145,7 +173,23 @@
                 return;
             }
 
-            setFormMessage(message, "Your details are valid. Account creation will be connected to the Authentication Service later.", "success");
+            const submitButton = form.querySelector("button[type='submit']");
+            submitButton.disabled = true;
+            setFormMessage(message, "Creating your account...", "");
+            try {
+                await requestAuth("/api/auth/register", {
+                    fullName: name.value.trim(),
+                    email: email.value.trim(),
+                    phone: phone.value.trim(),
+                    password: password.value
+                });
+                setFormMessage(message, "Account created. You can now log in.", "success");
+                form.reset();
+            } catch (error) {
+                setFormMessage(message, error.message, "error");
+            } finally {
+                submitButton.disabled = false;
+            }
         });
     }
 

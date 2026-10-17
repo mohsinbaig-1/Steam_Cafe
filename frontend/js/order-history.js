@@ -10,7 +10,7 @@ let activeFilter = "all";
 try {
     const storedOrders = JSON.parse(localStorage.getItem("steamCafeOrders"));
     savedOrders = Array.isArray(storedOrders)
-        ? storedOrders.filter(order => order && typeof order === "object")
+        ? storedOrders.filter(order => order && typeof order === "object" && !Array.isArray(order))
         : [];
 } catch (error) {
     console.error("Unable to read saved orders.", error);
@@ -29,11 +29,12 @@ function normalizeStatus(status) {
     const value = String(status || "Pending").trim().toLowerCase();
     if (value === "preparing") return "preparing";
     if (["completed", "delivered", "complete"].includes(value)) return "completed";
+    if (["cancelled", "canceled", "cancel"].includes(value)) return "cancelled";
     return "pending";
 }
 
 function statusLabel(status) {
-    return status === "completed" ? "Completed" : status.charAt(0).toUpperCase() + status.slice(1);
+    return status.charAt(0).toUpperCase() + status.slice(1);
 }
 
 function formatDate(value) {
@@ -56,6 +57,29 @@ function normalizedItems(order) {
         : [];
 }
 
+function fulfillmentLabel(fulfillment) {
+    return fulfillment && fulfillment.type === "pickup" ? "Pickup" : "Delivery";
+}
+
+function paymentLabel(paymentMethod) {
+    const value = String(paymentMethod || "").trim();
+    if (!value) return "Payment method unavailable";
+    return value
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, character => character.toUpperCase());
+}
+
+function createInfoRow(label, value) {
+    const row = document.createElement("div");
+    row.className = "order-info-row";
+    const labelElement = document.createElement("span");
+    labelElement.textContent = label;
+    const valueElement = document.createElement("strong");
+    valueElement.textContent = value;
+    row.append(labelElement, valueElement);
+    return row;
+}
+
 function createSummaryRow(label, value, isTotal) {
     const row = document.createElement("div");
     row.className = isTotal ? "summary-row total" : "summary-row";
@@ -70,9 +94,7 @@ function createSummaryRow(label, value, isTotal) {
 function createOrderCard(order) {
     const items = normalizedItems(order);
     const status = normalizeStatus(order.status);
-    const fulfillmentType = order.fulfillment && order.fulfillment.type === "pickup"
-        ? "Pickup"
-        : "Delivery";
+    const fulfillmentType = fulfillmentLabel(order.fulfillment);
     const card = document.createElement("article");
     card.className = "order-card";
 
@@ -149,6 +171,14 @@ function createOrderCard(order) {
         createSummaryRow("Total", money(order.total), true)
     );
     details.appendChild(orderSummary);
+
+    const orderInfo = document.createElement("div");
+    orderInfo.className = "order-info";
+    orderInfo.append(
+        createInfoRow("Fulfillment", fulfillmentType),
+        createInfoRow("Payment", paymentLabel(order.paymentMethod))
+    );
+    details.appendChild(orderInfo);
 
     detailsButton.addEventListener("click", () => {
         const expanded = card.classList.toggle("expanded");
