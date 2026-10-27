@@ -10,15 +10,33 @@ existing visual identity without maintaining a second frontend.
 
 - Node.js 18.17+ (Node.js 20 LTS recommended)
 - npm
-- The existing auth service running at `http://localhost:4000` for login and
-  registration
+- Docker (optional, for local replica-set MongoDB) or MongoDB Replica Set
+- The existing auth service running at `http://localhost:4000` for login and registration
 
 ## Run locally
 
-```bash
-npm install
-npm run dev
-```
+1. **Start MongoDB Replica Set** (needed for atomic order creation & inventory decrement):
+   ```bash
+   docker compose up -d
+   ```
+
+2. **Install dependencies & seed database**:
+   ```bash
+   npm install
+   npm run seed
+   ```
+
+3. **Start the authentication service**:
+   ```bash
+   cd services/auth-service
+   npm install
+   npm start
+   ```
+
+4. **Start the Next.js frontend** (in project root):
+   ```bash
+   npm run dev
+   ```
 
 Open <http://localhost:3000>. Production verification and serving use:
 
@@ -36,32 +54,22 @@ elsewhere:
 
 ```env
 NEXT_PUBLIC_AUTH_API_URL=http://localhost:4000
+MONGODB_URI=mongodb://localhost:27017/steam_cafe
+JWT_SECRET=your_jwt_secret
 ```
 
 The browser storage contracts are preserved:
 
 - `steamCafeCart` stores the current cart.
-- `steamCafeOrders` stores locally-created orders.
+- `steamCafeOrders` stores locally cached orders.
 - `steamCafeRememberedEmail` stores only the optional remembered email.
-- The auth token and user session are kept in `sessionStorage`, not
-  `localStorage`.
+- The auth token and user session are kept in `sessionStorage`, not `localStorage`.
 
-Future Next.js Route Handlers should use `authenticateRequest` and `requireRole`
-from `lib/server/auth.ts`. They require the server-only `JWT_SECRET` environment
-variable that matches the authentication service; it must never use a
-`NEXT_PUBLIC_` prefix or be exposed to browser code. Existing JWTs without a
-role claim are treated as `customer`. Staff and admin access must be granted
-only from server-controlled user data.
+Route Handlers use `authenticateRequest` and `requireRole` from `lib/server/auth.ts`.
+They require the server-only `JWT_SECRET` environment variable that matches the
+authentication service.
 
-The versioned REST API uses the server-only `MONGODB_URI` and optional
-`MONGODB_DB_NAME` environment variables. Order creation uses a MongoDB
-transaction so inventory decrement and order creation succeed or fail
-together. MongoDB transactions require a replica set or sharded cluster; a
-standalone local MongoDB instance will need replica-set configuration before
-`POST /api/v1/orders` can be used.
-
-Card payment remains a display option only until a real payment provider is
-configured. The existing checkout and order-history pages still use their
-browser storage contracts and are not wired to the versioned API yet. The
-server-side order contract is available at `/api/v1/orders` for the next
-frontend integration step.
+The versioned REST API uses `MONGODB_URI` and `MONGODB_DB_NAME`.
+Order creation (`POST /api/v1/orders`) uses a MongoDB transaction so inventory decrement
+and order creation succeed or fail together. Order history (`GET /api/v1/orders`) fetches
+all orders placed by the authenticated user.

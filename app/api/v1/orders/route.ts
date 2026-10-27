@@ -18,6 +18,20 @@ function readIdempotencyKey(request: Request) {
   return value;
 }
 
+export async function GET(request: Request) {
+  try {
+    const user = await authenticateRequest(request);
+    await connectToDatabase();
+    const filter = user.role === "staff" || user.role === "admin"
+      ? {}
+      : { userId: user.id };
+    const orders = await OrderModel.find(filter).sort({ createdAt: -1 }).lean();
+    return Response.json(orders);
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const user = await authenticateRequest(request);
