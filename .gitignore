@@ -1,5 +1,6 @@
 node_modules/
 .next/
 .env
+.env*.local
 services/auth-service/.env
 npm-debug.log*
