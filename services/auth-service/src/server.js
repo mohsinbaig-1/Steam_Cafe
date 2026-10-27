@@ -101,7 +101,8 @@ app.post("/api/auth/login", async (req, res, next) => {
             throw error;
         }
 
-        const token = jwt.sign({ sub: user._id.toString(), email: user.email }, config.jwtSecret, {
+        const role = user.role === "staff" || user.role === "admin" ? user.role : "customer";
+        const token = jwt.sign({ sub: user._id.toString(), email: user.email, role }, config.jwtSecret, {
             expiresIn: config.jwtExpiresIn
         });
         res.status(200).json({ token, user: safeUser(user) });

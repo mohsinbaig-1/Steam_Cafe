@@ -46,6 +46,22 @@ The browser storage contracts are preserved:
 - The auth token and user session are kept in `sessionStorage`, not
   `localStorage`.
 
+Future Next.js Route Handlers should use `authenticateRequest` and `requireRole`
+from `lib/server/auth.ts`. They require the server-only `JWT_SECRET` environment
+variable that matches the authentication service; it must never use a
+`NEXT_PUBLIC_` prefix or be exposed to browser code. Existing JWTs without a
+role claim are treated as `customer`. Staff and admin access must be granted
+only from server-controlled user data.
+
+The versioned REST API uses the server-only `MONGODB_URI` and optional
+`MONGODB_DB_NAME` environment variables. Order creation uses a MongoDB
+transaction so inventory decrement and order creation succeed or fail
+together. MongoDB transactions require a replica set or sharded cluster; a
+standalone local MongoDB instance will need replica-set configuration before
+`POST /api/v1/orders` can be used.
+
 Card payment remains a display option only until a real payment provider is
-configured. Orders are not sent to MongoDB or an order API by this frontend;
-they remain local until a backend order contract is connected.
+configured. The existing checkout and order-history pages still use their
+browser storage contracts and are not wired to the versioned API yet. The
+server-side order contract is available at `/api/v1/orders` for the next
+frontend integration step.
