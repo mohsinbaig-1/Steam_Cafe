@@ -1,4 +1,4 @@
-import { jwtVerify, type JWTPayload } from "jose";
+import { jwtVerify, SignJWT, type JWTPayload } from "jose";
 
 export type UserRole = "customer" | "staff" | "admin";
 
@@ -83,4 +83,15 @@ export function requireRole(user: AuthenticatedUser, ...allowedRoles: UserRole[]
     throw new AuthorizationError();
   }
   return user;
+}
+
+export async function signUserToken(user: { id: string; email: string; role?: string }) {
+  const secret = getJwtSecret();
+  const role = user.role === "staff" || user.role === "admin" ? user.role : "customer";
+  return new SignJWT({ email: user.email, role })
+    .setProtectedHeader({ alg: "HS256" })
+    .setSubject(user.id)
+    .setIssuedAt()
+    .setExpirationTime("24h")
+    .sign(new TextEncoder().encode(secret));
 }

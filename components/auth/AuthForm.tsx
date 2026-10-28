@@ -46,22 +46,44 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     }
 
     setMessage(login ? "Signing you in..." : "Creating your account...");
+
+    const payload = login
+      ? { email: values.email.trim(), password: values.password }
+      : {
+          fullName: values.name.trim(),
+          email: values.email.trim(),
+          phone: values.phone.trim(),
+          password: values.password
+        };
+
+    const endpoint = `/api/auth/${login ? "login" : "register"}`;
+    const configuredBase = process.env.NEXT_PUBLIC_AUTH_API_URL?.trim();
+
     try {
-      const base = process.env.NEXT_PUBLIC_AUTH_API_URL ?? "http://localhost:4000";
-      const response = await fetch(`${base}/api/auth/${login ? "login" : "register"}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          login
-            ? { email: values.email.trim(), password: values.password }
-            : {
-                fullName: values.name.trim(),
-                email: values.email.trim(),
-                phone: values.phone.trim(),
-                password: values.password
-              }
-        )
-      });
+      let response: Response;
+
+      if (configuredBase) {
+        try {
+          response = await fetch(`${configuredBase}${endpoint}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        } catch {
+          // If port 4000/configuredBase is offline, gracefully use the built-in route
+          response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        }
+      } else {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      }
 
       const data: { error?: string; token?: string; user?: unknown } = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error ?? "The authentication service could not complete the request.");

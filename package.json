@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "seed": "node scripts/seed.mjs",
-    "lint": "next lint"
+    "lint": "next lint",
+    "auth": "node services/auth-service/src/server.js",
+    "seed": "node scripts/seed.mjs"
   },
   "dependencies": {
     "jose": "^6.2.13",
