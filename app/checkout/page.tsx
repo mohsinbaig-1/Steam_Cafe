@@ -16,10 +16,14 @@ export default function CheckoutPage() {
   const [payment, setPayment] = useState("cash");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [details, setDetails] = useState({ name: "", phone: "", address: "", city: "", area: "", branch: "main", notes: "" });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const token = window.sessionStorage.getItem("steamCafeAuthToken");
+      setIsLoggedIn(Boolean(token));
+
       try {
         const storedUser = window.sessionStorage.getItem("steamCafeUser");
         if (storedUser) {
@@ -40,7 +44,10 @@ export default function CheckoutPage() {
   const delivery = method === "delivery" && subtotal > 0 ? DELIVERY_FEE : 0;
 
   const placeOrder = async () => {
-    if (!items.length) { setMessage("Your cart is empty."); return; }
+    if (!items.length) {
+      setMessage("Your cart is empty.");
+      return;
+    }
     if (method === "delivery" && (!details.name || !details.phone || !details.address || !details.city || !isValidPhone(details.phone))) {
       setMessage("Please provide valid delivery information and a valid Pakistani phone number.");
       return;
@@ -48,13 +55,13 @@ export default function CheckoutPage() {
 
     const token = typeof window !== "undefined" ? window.sessionStorage.getItem("steamCafeAuthToken") : null;
     if (!token) {
-      setMessage("Please log in first to place your order.");
-      window.setTimeout(() => router.push("/login"), 1500);
+      setMessage("Please log in first so your order can be saved to your account and database.");
+      window.setTimeout(() => router.push("/login?redirect=/checkout"), 1200);
       return;
     }
 
     setSubmitting(true);
-    setMessage("Placing your order...");
+    setMessage("Submitting order to Steam Cafe...");
 
     const fulfillment: Fulfillment = method === "delivery"
       ? { type: "delivery", name: details.name.trim(), phone: details.phone.trim(), address: details.address.trim(), city: details.city.trim(), area: details.area.trim() }
@@ -81,7 +88,7 @@ export default function CheckoutPage() {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to place order. Please try again.");
+        throw new Error(data.error || "Failed to place order in database. Please check your connection.");
       }
 
       const createdId = data._id || data.id || `SC-${Date.now()}`;
@@ -99,7 +106,8 @@ export default function CheckoutPage() {
       });
 
       window.localStorage.removeItem("steamCafeCart");
-      setMessage("Order placed successfully!");
+      window.dispatchEvent(new Event("steam-cafe-cart-updated"));
+      setMessage("Order placed and saved to database successfully!");
       window.setTimeout(() => router.push("/order-success"), 800);
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "An error occurred while placing order.");
@@ -120,6 +128,23 @@ export default function CheckoutPage() {
       <section className="checkout-page">
         <div className="checkout-container">
           <section className="checkout-form">
+            {!isLoggedIn && (
+              <div className="checkout-card" style={{ borderLeft: "4px solid #f59e0b", background: "#fffbeb", padding: "16px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#92400e" }}>
+                  <i className="fa-solid fa-circle-info" style={{ fontSize: "1.4rem" }} />
+                  <div>
+                    <strong style={{ display: "block", fontSize: "1rem" }}>Please log in to complete checkout</strong>
+                    <p style={{ margin: "4px 0 0", fontSize: "0.88rem", color: "#78350f" }}>
+                      You need to be logged in so your order is saved into the database and your order history.{" "}
+                      <Link href="/login?redirect=/checkout" style={{ textDecoration: "underline", fontWeight: 700, color: "#b45309" }}>
+                        Click here to Log in / Register
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="checkout-card">
               <div className="card-heading">
                 <div className="heading-icon"><i className="fa-solid fa-truck" /></div>
@@ -139,6 +164,7 @@ export default function CheckoutPage() {
                 ))}
               </div>
             </div>
+
             {method === "delivery" ? (
               <div className="checkout-card">
                 <div className="card-heading">
@@ -175,6 +201,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
             )}
+
             <div className="checkout-card">
               <div className="card-heading">
                 <div className="heading-icon"><i className="fa-solid fa-credit-card" /></div>
@@ -190,13 +217,16 @@ export default function CheckoutPage() {
                 ))}
               </div>
             </div>
+
             <div className="checkout-card">
               <span className="section-tag">SPECIAL REQUESTS</span>
               <h2>Order notes</h2>
               <textarea className="order-notes" value={details.notes} onChange={(event) => update("notes", event.target.value)} placeholder="Anything we should know?" />
             </div>
+
             {message && <p className={`checkout-message show ${message.includes("successfully") ? "success" : "error"}`} role="status">{message}</p>}
           </section>
+
           <aside className="checkout-summary">
             <div className="summary-header">
               <span className="section-tag">YOUR ORDER</span>
