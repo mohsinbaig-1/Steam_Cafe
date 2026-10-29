@@ -8,6 +8,7 @@ import { itemCount, readCart } from "@/lib/cart";
 interface UserProfile {
   fullName?: string;
   email?: string;
+  role?: "customer" | "staff" | "admin";
 }
 
 export function Navbar() {
@@ -52,14 +53,18 @@ export function Navbar() {
       window.sessionStorage.removeItem("steamCafeUser");
       window.dispatchEvent(new Event("steam-cafe-auth-updated"));
       setUser(null);
+      window.location.href = "/";
     }
   };
 
-  const links = [
+  const isAdmin = user?.role === "admin" || user?.role === "staff";
+
+  const links: Array<[string, string]> = [
     ["/", "Home"],
     ["/menu", "Menu"],
     ["/deals", "Deals"],
-    ["/order-history", "Orders"]
+    ["/order-history", "Orders"],
+    ...(isAdmin ? [["/admin", "Admin Dashboard ⚡"] as [string, string]] : [])
   ];
 
   const displayName = user?.fullName ? user.fullName.split(" ")[0] : "Account";
@@ -72,7 +77,12 @@ export function Navbar() {
         </Link>
         <nav className={`nav-links ${open ? "is-open" : ""}`} aria-label="Main navigation">
           {links.map(([href, label]) => (
-            <Link key={href} href={href} onClick={() => setOpen(false)}>
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              style={href === "/admin" ? { color: "#f5a623", fontWeight: 700 } : undefined}
+            >
               {label}
             </Link>
           ))}
@@ -81,7 +91,9 @@ export function Navbar() {
           </Link>
           {user ? (
             <div className="nav-login" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <span><i className="fa-solid fa-user" /> {displayName}</span>
+              <span>
+                <i className="fa-solid fa-user" /> {displayName} {isAdmin && <small style={{ color: "#f5a623" }}>(Admin)</small>}
+              </span>
               <button
                 type="button"
                 onClick={() => {
@@ -107,6 +119,25 @@ export function Navbar() {
           )}
         </nav>
         <div className="nav-actions">
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="login-button"
+              style={{
+                background: "linear-gradient(135deg, #f5a623, #d98d0d)",
+                color: "#141414",
+                fontWeight: 700,
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "12px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px"
+              }}
+            >
+              <i className="fa-solid fa-gauge" /> Admin
+            </Link>
+          )}
           <Link href="/cart" className="cart-button">
             <i className="fa-solid fa-cart-shopping" />
             <span>Cart</span>
@@ -114,7 +145,9 @@ export function Navbar() {
           </Link>
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>Hi, {displayName}</span>
+              <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>
+                Hi, {displayName} {isAdmin && <span style={{ color: "#f5a623", fontSize: "0.8rem" }}>[Admin]</span>}
+              </span>
               <button
                 type="button"
                 className="login-button"

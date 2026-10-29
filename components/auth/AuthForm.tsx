@@ -98,13 +98,20 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         if (data.user) window.sessionStorage.setItem("steamCafeUser", JSON.stringify(data.user));
 
         window.dispatchEvent(new Event("steam-cafe-auth-updated"));
-        setMessage("Login successful! Redirecting...");
+        setMessage("Login successful! Opening menu...");
 
         window.setTimeout(() => {
           const params = new URLSearchParams(window.location.search);
-          const redirect = params.get("redirect") || "/";
+          // If an explicit redirect is provided, honour it; otherwise send admins/staff
+          // to the dashboard and regular customers to the menu.
+          const explicitRedirect = params.get("redirect");
+          const userObj = data.user as { role?: string } | null | undefined;
+          const role = userObj?.role;
+          const redirect =
+            explicitRedirect ||
+            (role === "admin" || role === "staff" ? "/admin" : "/menu");
           router.push(redirect);
-        }, 600);
+        }, 500);
       } else {
         setMessage("Account created successfully. You can now log in.");
         setValues({ name: "", email: "", phone: "", password: "", confirmation: "" });

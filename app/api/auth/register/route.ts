@@ -56,7 +56,8 @@ export async function POST(request: Request) {
           id: user._id.toString(),
           fullName: user.fullName,
           email: user.email,
-          phone: user.phone
+          phone: user.phone,
+          role: user.role || "customer"
         }
       },
       { status: 201 }

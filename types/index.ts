@@ -47,4 +47,5 @@ export interface AuthUser {
   fullName?: string;
   email?: string;
   phone?: string;
+  role?: "customer" | "staff" | "admin";
 }

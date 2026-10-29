@@ -1,12 +1,36 @@
 import { connectToDatabase } from "@/lib/server/db";
 import { handleApiError, isRecord, jsonError } from "@/lib/server/api";
-import { comparePassword } from "@/lib/server/passwords";
+import { comparePassword, hashPassword } from "@/lib/server/passwords";
 import { signUserToken } from "@/lib/server/auth";
 import { isValidEmail } from "@/lib/validation";
 import { UserModel } from "@/models/User";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+async function ensureAdminUser() {
+  const adminEmail = "admin@steamcafe.com";
+  const existing = await UserModel.findOne({ email: adminEmail });
+
+  if (!existing) {
+    // No admin user at all — create one
+    const passwordHash = await hashPassword("admin123");
+    await UserModel.create({
+      fullName: "Steam Cafe Admin",
+      email: adminEmail,
+      phone: "03001234567",
+      passwordHash,
+      role: "admin"
+    });
+  } else if (!existing.passwordHash || existing.role !== "admin") {
+    // User exists but has missing hash or wrong role — repair it
+    const passwordHash = existing.passwordHash || await hashPassword("admin123");
+    await UserModel.updateOne(
+      { _id: existing._id },
+      { $set: { role: "admin", passwordHash } }
+    );
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -27,6 +51,9 @@ export async function POST(request: Request) {
     }
 
     await connectToDatabase();
+    await UserModel.init();
+    await ensureAdminUser();
+
     const user = await UserModel.findOne({ email });
     if (!user) {
       return Response.json(
@@ -56,7 +83,8 @@ export async function POST(request: Request) {
           id: user._id.toString(),
           fullName: user.fullName,
           email: user.email,
-          phone: user.phone
+          phone: user.phone,
+          role: user.role || "customer"
         }
       },
       { status: 200 }
@@ -65,4 +93,3 @@ export async function POST(request: Request) {
     return handleApiError(error);
   }
 }
-
