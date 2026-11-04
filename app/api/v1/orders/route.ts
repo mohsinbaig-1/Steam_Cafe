@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 async function ensureCatalogAndInventory() {
   const count = await ProductModel.countDocuments();
-  if (count === 0) {
+  if (count < defaultProducts.length) {
     for (const p of defaultProducts) {
       await ProductModel.updateOne(
         { productId: p.id },
