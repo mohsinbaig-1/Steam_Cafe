@@ -7,25 +7,28 @@ import { Fulfillment } from "@/types";
 
 interface OrderItem {
   productId?: number;
-  name: string;
-  unitPrice: number;
-  quantity: number;
-  lineTotal: number;
+  id?: number;
+  name?: string;
+  unitPrice?: number;
+  price?: number;
+  quantity?: number;
+  lineTotal?: number;
 }
 
 interface AdminOrder {
-  _id: string;
+  _id?: string;
+  id?: string;
   idempotencyKey?: string;
-  userId: string;
-  items: OrderItem[];
-  subtotal: number;
-  deliveryFee: number;
-  total: number;
-  fulfillment: Fulfillment | undefined;
-  paymentMethod: "cash" | "card";
+  userId?: string;
+  items?: OrderItem[];
+  subtotal?: number;
+  deliveryFee?: number;
+  total?: number;
+  fulfillment?: Fulfillment;
+  paymentMethod?: "cash" | "card" | string;
   notes?: string;
-  status: "Pending" | "Preparing" | "Ready" | "Delivered" | "Cancelled";
-  createdAt: string;
+  status?: "Pending" | "Preparing" | "Ready" | "Delivered" | "Cancelled" | string;
+  createdAt?: string;
   updatedAt?: string;
 }
 
@@ -118,7 +121,9 @@ export default function AdminDashboardPage() {
       }
 
       const updated: AdminOrder = await res.json();
-      setOrders((prev) => prev.map((o) => (o._id === orderId ? { ...o, status: updated.status } : o)));
+      setOrders((prev) =>
+        prev.map((o) => ((o._id || o.id) === orderId ? { ...o, status: updated.status } : o))
+      );
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to update order status.");
     } finally {
@@ -127,23 +132,28 @@ export default function AdminDashboardPage() {
   };
 
   const stats = useMemo(() => {
+    const isStatus = (o: AdminOrder, s: string) => (o.status || "").toLowerCase() === s.toLowerCase();
     const totalOrders = orders.length;
-    const pending = orders.filter((o) => o.status === "Pending").length;
-    const preparing = orders.filter((o) => o.status === "Preparing").length;
-    const ready = orders.filter((o) => o.status === "Ready").length;
-    const delivered = orders.filter((o) => o.status === "Delivered").length;
-    const cancelled = orders.filter((o) => o.status === "Cancelled").length;
+    const pending = orders.filter((o) => isStatus(o, "Pending")).length;
+    const preparing = orders.filter((o) => isStatus(o, "Preparing")).length;
+    const ready = orders.filter((o) => isStatus(o, "Ready")).length;
+    const delivered = orders.filter((o) => isStatus(o, "Delivered") || isStatus(o, "Completed")).length;
+    const cancelled = orders.filter((o) => isStatus(o, "Cancelled") || isStatus(o, "Canceled")).length;
     const revenue = orders
-      .filter((o) => o.status !== "Cancelled")
-      .reduce((sum, o) => sum + (o.total || 0), 0);
+      .filter((o) => !isStatus(o, "Cancelled") && !isStatus(o, "Canceled"))
+      .reduce((sum, o) => sum + (o.total ?? ((o.subtotal ?? 0) + (o.deliveryFee ?? 0))), 0);
 
     return { totalOrders, pending, preparing, ready, delivered, cancelled, revenue };
   }, [orders]);
 
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
-      if (statusFilter !== "all" && order.status !== statusFilter) return false;
-      if (fulfillmentFilter !== "all" && order.fulfillment?.type !== fulfillmentFilter) return false;
+      if (statusFilter !== "all" && (order.status || "").toLowerCase() !== statusFilter.toLowerCase()) {
+        return false;
+      }
+      if (fulfillmentFilter !== "all" && order.fulfillment?.type !== fulfillmentFilter) {
+        return false;
+      }
 
       if (searchTerm.trim()) {
         const query = searchTerm.toLowerCase().trim();
@@ -152,7 +162,7 @@ export default function AdminDashboardPage() {
         const city = order.fulfillment?.city?.toLowerCase() || "";
         const address = order.fulfillment?.address?.toLowerCase() || "";
         const branch = order.fulfillment?.branch?.toLowerCase() || "";
-        const id = order._id.toLowerCase();
+        const id = String(order._id || order.id || "").toLowerCase();
         const matchesQuery =
           customerName.includes(query) ||
           phone.includes(query) ||
@@ -166,17 +176,19 @@ export default function AdminDashboardPage() {
     });
   }, [orders, statusFilter, fulfillmentFilter, searchTerm]);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Pending":
+  const getStatusColor = (status?: string) => {
+    switch ((status || "").toLowerCase()) {
+      case "pending":
         return { bg: "#fef3c7", text: "#92400e", border: "#f59e0b" };
-      case "Preparing":
+      case "preparing":
         return { bg: "#dbeafe", text: "#1e40af", border: "#3b82f6" };
-      case "Ready":
+      case "ready":
         return { bg: "#f3e8ff", text: "#6b21a8", border: "#a855f7" };
-      case "Delivered":
+      case "delivered":
+      case "completed":
         return { bg: "#dcfce7", text: "#166534", border: "#22c55e" };
-      case "Cancelled":
+      case "cancelled":
+      case "canceled":
         return { bg: "#fee2e2", text: "#991b1b", border: "#ef4444" };
       default:
         return { bg: "#f3f4f6", text: "#374151", border: "#9ca3af" };
@@ -377,13 +389,30 @@ export default function AdminDashboardPage() {
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {filteredOrders.map((order) => {
+            {filteredOrders.map((order, orderIdx) => {
+              const orderId = order._id || order.id || `order-${orderIdx}`;
               const statusStyle = getStatusColor(order.status);
-              const isUpdating = updatingId === order._id;
+              const isUpdating = updatingId === orderId;
+              const normalizedStatus = (order.status || "").toLowerCase();
+              const currentStatus =
+                statusOptions.find((opt) => opt.toLowerCase() === normalizedStatus) || "Pending";
+
+              const formattedDate = (() => {
+                if (!order.createdAt) return "Recent";
+                const d = new Date(order.createdAt);
+                return isNaN(d.getTime())
+                  ? "Recent"
+                  : d.toLocaleString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit"
+                    });
+              })();
 
               return (
                 <div
-                  key={order._id}
+                  key={orderId}
                   style={{
                     background: "#141414",
                     border: "1px solid rgba(255,255,255,0.08)",
@@ -398,15 +427,10 @@ export default function AdminDashboardPage() {
                   <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "12px", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "14px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                       <span style={{ fontFamily: "monospace", fontSize: "1rem", fontWeight: 700, color: "#fff", background: "#222", padding: "4px 8px", borderRadius: "6px" }}>
-                        #{order._id.slice(-6).toUpperCase()}
+                        #{String(orderId).slice(-6).toUpperCase()}
                       </span>
                       <span style={{ fontSize: "0.85rem", color: "#888" }}>
-                        {new Date(order.createdAt).toLocaleString(undefined, {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        })}
+                        {formattedDate}
                       </span>
                       <span
                         style={{
@@ -419,7 +443,7 @@ export default function AdminDashboardPage() {
                           border: `1px solid ${statusStyle.border}`
                         }}
                       >
-                        {order.status}
+                        {order.status || "Pending"}
                       </span>
                     </div>
 
@@ -427,9 +451,9 @@ export default function AdminDashboardPage() {
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <span style={{ fontSize: "0.8rem", color: "#aaa" }}>Update Status:</span>
                       <select
-                        value={order.status}
+                        value={currentStatus}
                         disabled={isUpdating}
-                        onChange={(e) => updateOrderStatus(order._id, e.target.value)}
+                        onChange={(e) => updateOrderStatus(orderId, e.target.value)}
                         style={{
                           background: "#1f1f1f",
                           color: "#fff",
@@ -487,17 +511,23 @@ export default function AdminDashboardPage() {
                     {/* Items List */}
                     <div>
                       <h4 style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "1px", color: "#f5a623", margin: "0 0 8px" }}>
-                        Items Ordered ({order.items.reduce((s, it) => s + it.quantity, 0)})
+                        Items Ordered ({(order.items || []).reduce((s, it) => s + (it.quantity || 1), 0)})
                       </h4>
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                        {order.items.map((item, idx) => (
-                          <div key={idx} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", borderBottom: "1px dashed rgba(255,255,255,0.05)", paddingBottom: "4px" }}>
-                            <span>
-                              <b style={{ color: "#f5a623" }}>{item.quantity}x</b> {item.name}
-                            </span>
-                            <span style={{ color: "#aaa" }}>{money(item.lineTotal || item.unitPrice * item.quantity)}</span>
-                          </div>
-                        ))}
+                        {(order.items || []).map((item, idx) => {
+                          const unitPrice = item.unitPrice ?? item.price ?? 0;
+                          const quantity = item.quantity ?? 1;
+                          const lineTotal = item.lineTotal ?? (unitPrice * quantity);
+
+                          return (
+                            <div key={idx} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", borderBottom: "1px dashed rgba(255,255,255,0.05)", paddingBottom: "4px" }}>
+                              <span>
+                                <b style={{ color: "#f5a623" }}>{quantity}x</b> {item.name || "Item"}
+                              </span>
+                              <span style={{ color: "#aaa" }}>{money(lineTotal)}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -506,63 +536,63 @@ export default function AdminDashboardPage() {
                       <div>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "#888", marginBottom: "4px" }}>
                           <span>Subtotal:</span>
-                          <span>{money(order.subtotal)}</span>
+                          <span>{money(order.subtotal ?? 0)}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "#888", marginBottom: "6px" }}>
                           <span>Delivery Fee:</span>
-                          <span>{money(order.deliveryFee)}</span>
+                          <span>{money(order.deliveryFee ?? 0)}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.1rem", fontWeight: 800, color: "#fff", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "6px" }}>
                           <span>Total:</span>
-                          <span style={{ color: "#f5a623" }}>{money(order.total)}</span>
+                          <span style={{ color: "#f5a623" }}>{money(order.total ?? ((order.subtotal ?? 0) + (order.deliveryFee ?? 0)))}</span>
                         </div>
                       </div>
 
                       <div style={{ marginTop: "10px", fontSize: "0.8rem", color: "#888" }}>
                         <span>Payment Method: </span>
-                        <strong style={{ color: "#ddd", textTransform: "uppercase" }}>{order.paymentMethod}</strong>
+                        <strong style={{ color: "#ddd", textTransform: "uppercase" }}>{order.paymentMethod || "CASH"}</strong>
                       </div>
                     </div>
                   </div>
 
                   {/* Fast Action Buttons */}
                   <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", paddingTop: "10px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-                    {order.status === "Pending" && (
+                    {normalizedStatus === "pending" && (
                       <button
                         type="button"
-                        onClick={() => updateOrderStatus(order._id, "Preparing")}
+                        onClick={() => updateOrderStatus(orderId, "Preparing")}
                         disabled={isUpdating}
                         style={{ background: "#2563eb", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}
                       >
                         <i className="fa-solid fa-fire-burner" /> Send to Kitchen (Preparing)
                       </button>
                     )}
-                    {order.status === "Preparing" && (
+                    {normalizedStatus === "preparing" && (
                       <button
                         type="button"
-                        onClick={() => updateOrderStatus(order._id, "Ready")}
+                        onClick={() => updateOrderStatus(orderId, "Ready")}
                         disabled={isUpdating}
                         style={{ background: "#7c3aed", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}
                       >
                         <i className="fa-solid fa-box" /> Mark as Ready
                       </button>
                     )}
-                    {order.status === "Ready" && (
+                    {normalizedStatus === "ready" && (
                       <button
                         type="button"
-                        onClick={() => updateOrderStatus(order._id, "Delivered")}
+                        onClick={() => updateOrderStatus(orderId, "Delivered")}
                         disabled={isUpdating}
                         style={{ background: "#16a34a", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer" }}
                       >
                         <i className="fa-solid fa-circle-check" /> Complete (Delivered)
                       </button>
                     )}
-                    {order.status !== "Cancelled" && order.status !== "Delivered" && (
+                    {normalizedStatus !== "cancelled" && normalizedStatus !== "canceled" && normalizedStatus !== "delivered" && (
                       <button
                         type="button"
                         onClick={() => {
                           if (confirm("Are you sure you want to cancel this order?")) {
-                            updateOrderStatus(order._id, "Cancelled");
+                            updateOrderStatus(orderId, "Cancelled");
                           }
                         }}
                         disabled={isUpdating}

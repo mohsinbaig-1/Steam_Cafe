@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="menu-product-info">
         <div className="menu-product-rating"><i className="fa-solid fa-star" /> {product.rating}</div>
         <h3>{product.name}</h3><p>{product.description}</p>
-        <div className="menu-product-bottom"><span className="menu-product-price">Rs. {product.price.toLocaleString()}</span>
+        <div className="menu-product-bottom"><span className="menu-product-price">Rs. {(product.price ?? 0).toLocaleString()}</span>
           <button className="menu-add-button" type="button" onClick={() => add(product)}><i className="fa-solid fa-plus" /> Add</button>
         </div>
       </div>

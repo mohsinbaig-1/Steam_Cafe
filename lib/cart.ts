@@ -36,4 +36,13 @@ export function subtotal(items: CartItem[]) {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
-export const money = (value: number) => `Rs. ${value.toLocaleString()}`;
+export const money = (value?: number | string | null): string => {
+  if (value === undefined || value === null) {
+    return "Rs. 0";
+  }
+  const num = typeof value === "number" ? value : Number(value);
+  if (Number.isNaN(num) || !Number.isFinite(num)) {
+    return "Rs. 0";
+  }
+  return `Rs. ${num.toLocaleString()}`;
+};
