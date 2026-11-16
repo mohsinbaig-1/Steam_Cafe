@@ -403,11 +403,11 @@ export default function AdminDashboardPage() {
                 return isNaN(d.getTime())
                   ? "Recent"
                   : d.toLocaleString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit"
-                    });
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  });
               })();
 
               return (
