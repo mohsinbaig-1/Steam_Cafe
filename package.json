@@ -10,8 +10,8 @@
     "auth": "node services/auth-service/src/server.js",
     "seed": "node scripts/seed.mjs"
   },
-  
   "dependencies": {
+    "ioredis": "^6.1.0",
     "jose": "^6.2.13",
     "mongoose": "^9.11.4",
     "next": "14.2.30",

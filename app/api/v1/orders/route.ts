@@ -1,12 +1,22 @@
 import mongoose from "mongoose";
 import { authenticateRequest } from "@/lib/server/auth";
-import { handleApiError, isRecord } from "@/lib/server/api";
+import { handleApiError, isRecord, jsonError } from "@/lib/server/api";
 import { connectToDatabase } from "@/lib/server/db";
 import { InventoryError, OrderInputError, DELIVERY_FEE, parseOrderInput } from "@/lib/server/orders";
 import { InventoryModel } from "@/models/Inventory";
 import { OrderModel } from "@/models/Order";
 import { ProductModel } from "@/models/Product";
 import { products as defaultProducts } from "@/lib/products";
+import {
+  getCache,
+  setCache,
+  deleteCache,
+  deleteCachePattern,
+  getOrSetCache,
+  acquireDistributedLock,
+  releaseDistributedLock,
+  checkRateLimit
+} from "@/lib/server/redis";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -66,11 +76,23 @@ function readIdempotencyKey(request: Request) {
 export async function GET(request: Request) {
   try {
     const user = await authenticateRequest(request);
+
+    // If customer, utilize Redis cache-aside (30s TTL)
+    if (user.role !== "staff" && user.role !== "admin") {
+      const userOrders = await getOrSetCache(
+        `cache:orders:user:${user.id}`,
+        async () => {
+          await connectToDatabase();
+          return OrderModel.find({ userId: user.id }).sort({ createdAt: -1 }).lean();
+        },
+        30
+      );
+      return Response.json(userOrders);
+    }
+
+    // Staff/Admin gets live orders
     await connectToDatabase();
-    const filter = user.role === "staff" || user.role === "admin"
-      ? {}
-      : { userId: user.id };
-    const orders = await OrderModel.find(filter).sort({ createdAt: -1 }).lean();
+    const orders = await OrderModel.find({}).sort({ createdAt: -1 }).lean();
     return Response.json(orders);
   } catch (error) {
     return handleApiError(error);
@@ -78,9 +100,34 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  let lockKey: string | null = null;
+  let lockAcquired = false;
+
   try {
     const user = await authenticateRequest(request);
+
+    // 1. Rate Limiting Protection (max 10 checkout attempts per minute per user)
+    const rateCheck = await checkRateLimit(`ratelimit:orders:${user.id}`, 10, 60);
+    if (!rateCheck.allowed) {
+      return jsonError("Too many order requests. Please try again shortly.", 429);
+    }
+
     const idempotencyKey = readIdempotencyKey(request);
+    const idempotencyCacheKey = `order:idempotency:${user.id}:${idempotencyKey}`;
+
+    // 2. High-Speed Idempotency Cache Check via Redis
+    const cachedOrder = await getCache(idempotencyCacheKey);
+    if (cachedOrder) {
+      return Response.json(cachedOrder, { status: 200 });
+    }
+
+    // 3. Distributed Lock to prevent duplicate concurrent submissions
+    lockKey = `lock:order:${user.id}:${idempotencyKey}`;
+    lockAcquired = await acquireDistributedLock(lockKey, 15);
+    if (!lockAcquired) {
+      return jsonError("Your order is currently being processed. Please wait a moment.", 409);
+    }
+
     const body: unknown = await request.json();
     const input = parseOrderInput(body);
 
@@ -88,11 +135,13 @@ export async function POST(request: Request) {
     await OrderModel.init();
     await ensureCatalogAndInventory();
 
+    // Secondary DB check for idempotency
     const existing = await OrderModel.findOne({
       userId: user.id,
       idempotencyKey
     }).lean();
     if (existing) {
+      await setCache(idempotencyCacheKey, existing, 86400);
       return Response.json(existing, { status: 200 });
     }
 
@@ -124,6 +173,7 @@ export async function POST(request: Request) {
         };
       });
 
+      // Sort items by productId to prevent deadlocks across concurrent transactions
       for (const item of input.items.slice().sort((left, right) => left.productId - right.productId)) {
         const inventory = await InventoryModel.findOneAndUpdate(
           { productId: item.productId, availableQuantity: { $gte: item.quantity } },
@@ -155,31 +205,57 @@ export async function POST(request: Request) {
       return order;
     };
 
+    let createdOrder: any = null;
     let session: mongoose.ClientSession | null = null;
     try {
       session = await mongoose.startSession();
-      let createdOrder;
       await session.withTransaction(async () => {
         createdOrder = await processOrder(session!);
       });
-      return Response.json(createdOrder, { status: 201 });
     } catch (transactionError) {
       if (isTransactionUnsupported(transactionError)) {
         // Fallback for standalone MongoDB deployments without replica set
-        const createdOrder = await processOrder();
-        return Response.json(createdOrder, { status: 201 });
-      }
-      if (isRecord(transactionError) && transactionError.code === 11000) {
+        createdOrder = await processOrder();
+      } else if (isRecord(transactionError) && transactionError.code === 11000) {
         const existingOrder = await OrderModel.findOne({ userId: user.id, idempotencyKey }).lean();
-        if (existingOrder) return Response.json(existingOrder, { status: 200 });
+        if (existingOrder) {
+          await setCache(idempotencyCacheKey, existingOrder, 86400);
+          return Response.json(existingOrder, { status: 200 });
+        }
+      } else {
+        throw transactionError;
       }
-      throw transactionError;
     } finally {
       if (session) {
         await session.endSession();
       }
     }
+
+    // 4. Update Caches upon successful order creation
+    if (createdOrder) {
+      const orderData = createdOrder.toObject ? createdOrder.toObject() : createdOrder;
+      // Cache response under idempotency key for 24h
+      await setCache(idempotencyCacheKey, orderData, 86400);
+
+      // Invalidate user orders cache and inventory caches
+      const invalidations: Promise<unknown>[] = [
+        deleteCache(`cache:orders:user:${user.id}`),
+        deleteCache("cache:inventory:all")
+      ];
+      for (const item of input.items) {
+        invalidations.push(deleteCache(`cache:inventory:${item.productId}`));
+      }
+      await Promise.all(invalidations);
+
+      return Response.json(orderData, { status: 201 });
+    }
+
+    return jsonError("Failed to create order.", 500);
   } catch (error) {
     return handleApiError(error);
+  } finally {
+    if (lockKey && lockAcquired) {
+      await releaseDistributedLock(lockKey);
+    }
   }
 }
