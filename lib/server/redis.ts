@@ -84,10 +84,6 @@ export function getRedisClient(): Redis | null {
     return null;
   }
 }
-
-/**
- * Retrieve cached value by key.
- */
 export async function getCache<T>(key: string): Promise<T | null> {
   const client = getRedisClient();
   if (!client || !cached.isAvailable) return null;
@@ -101,9 +97,7 @@ export async function getCache<T>(key: string): Promise<T | null> {
   }
 }
 
-/**
- * Store a key-value pair in cache with expiration (default: 300 seconds = 5 minutes).
- */
+
 export async function setCache<T>(
   key: string,
   value: T,
@@ -124,10 +118,6 @@ export async function setCache<T>(
     return false;
   }
 }
-
-/**
- * Delete a specific key from cache.
- */
 export async function deleteCache(key: string): Promise<boolean> {
   const client = getRedisClient();
   if (!client || !cached.isAvailable) return false;
@@ -140,10 +130,6 @@ export async function deleteCache(key: string): Promise<boolean> {
   }
 }
 
-/**
- * Invalidate keys matching a pattern (e.g. "cache:products:*").
- * Uses SCAN to avoid blocking the Redis event loop.
- */
 export async function deleteCachePattern(pattern: string): Promise<number> {
   const client = getRedisClient();
   if (!client || !cached.isAvailable) return 0;
@@ -227,11 +213,6 @@ export async function releaseDistributedLock(lockKey: string): Promise<boolean> 
     return false;
   }
 }
-
-/**
- * Simple atomic rate limiter using Redis INCR and EXPIRE.
- * Returns true if request is within rate limit.
- */
 export async function checkRateLimit(
   key: string,
   limit: number = 20,
